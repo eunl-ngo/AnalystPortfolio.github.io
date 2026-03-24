@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Determinants of UK long-term interest rates</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<div id="wrapper">
+
+				<header id="header">
+						<a href="index.html" class="logo">Luna Ngo</a>
+					</header>
+
+				<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Projects</a></li>
+							<li class="active"><a href="project-interest-rates.html">Interest rate case study</a></li>
+						</ul>
+					</nav>
+
+				<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+							<header class="major">
+    						<h1>Predicting the Gilt Market:<br />
+							A Dual-Track Regression Approach</h1>
+							<p>Identifying structural and cyclical determinants of UK long-term interest rates to drive a 2026 bond investment strategy.</p>
+						</header>
+						<div class="box">
+									<div class="">
+										<div class="col-4 col-12-small">
+											<h4>Goal</h4>
+											<p>Determine whether to buy, hold, or sell UK long-term bonds in 2026 based on macroeconomic forecasting models.</p>
+										</div>
+										<div class="col-4 col-12-small">
+											<h4>Methodology</h4>
+											<p>Dual-track: UK-specific OLS and G7 (UK, US, Germany, France, Japan, Canada and Italy) Cross-Country Panel Regression (1960–2025).</p>
+										</div>
+										<div class="col-4 col-12-small">
+											<h4>Decision</h4>
+											<p><strong>BUY.</strong> Falling inflation and rising unemployment signal a capital appreciation opportunity as yields drop.</p>
+										</div>
+									</div>
+								</div>
+
+								<hr />
+
+								<h2>The Challenge: Finding Signal in the Noise</h2>
+								<p>In 2026, the UK economy faces a complex crossroads: aging demographics and shifting monetary policy. To inform an investment decision, I analysed five key variables: <b>Inflation, Real GDP Growth, Government Debt, Unemployment,</b> and <b>Short-term Rates.</b></p>
+								
+								<blockquote>
+									The goal was to separate country-specific shocks (noise) from long-term structural relationships (signal).
+								</blockquote>
+								
+								<div class="image main"><img src="images/GMI.avif" alt="UK Bond Market Analysis" /></div>
+								
+								<h2>The Data: UK-Only vs. G7 Panel</h2>
+								<p>Using the <a href="https://www.globalmacrodata.com/">Global Macro Database</a>, I estimated regressions using <b>first differences</b> of the long-term interest rate. This removes common trends that often lead to spurious correlation, ensuring the results reflect actual year-to-year fluctuations. 
+								Real GDP growth is calculated as the first difference of the logarithm of real GDP to approximate percentage growth and ensure stationarity.</p>
+								
+								<h3>Key Regression Results</h3>
+								<div class="table-wrapper">
+									<table>
+										<thead>
+											<tr>
+												<th> Dependent Variable (Δltrate)</th>
+												<th>(1) UK-Only Model</th>
+												<th>(2) G7 Panel Model</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>										<tr>
+												<td><b>Inflation</b></td>
+												<td>0.012</td>
+												<td>0.088</td>
+											</tr>
+											<tr>
+												<td><b>Unemployment</b></td>
+												<td>-0.178***</td>
+												<td>-0.061***</td>
+											</tr>
+											<tr>
+												<td><b>Short-term Rate</b></td>
+												<td>0.102** </td>
+												<td>0.011</td>
+											</tr>
+											<tr>
+												<td><b>GDP Growth</b></td>
+												<td>1.606</td>
+												<td>4.831***</td>
+											</tr>
+											<tr>
+												<td><b>Debt-to-GDP</b></td>
+												<td>0.009</td>
+												<td>0.004***</td>
+											</tr>
+											<tr>
+												<td><b>Constant</b></td>
+												<td>-0.217</td>
+												<td>-0.494***</td>
+											</tr>
+											<tr>
+												<td><b>Adjusted R-squared </b></td>
+												<td>0.233</td>
+												<td>0.161</td>
+											</tr>
+											<tr>
+												<td><b>F-statistic </b></td>
+												<td>4.955</td>
+												<td>18.67</td>
+											</tr>
+											<tr>
+												<td><b>Prob > F </b></td>
+												<td>0.0000</td>
+												<td>0.0000</td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="1">Note: *** p < 0.01, ** p < 0.05</td>
+												<td>N=66 </td>
+												<td>N=462 </td>
+											</tr>
+										</tfoot>
+									</table>
+
+								<hr />
+
+								<h2> What the Data Tells Us</h2>
+								
+								<h3>1. Unemployment has a negative and significant effect - consistent with The Phillips Curve</h3>
+								<p>In the UK-only model, <b>Unemployment</b> was the most powerful predictor. A lower unemployment rate signals a tight labor market, suggesting the Bank of England to hike rates. Interestingly, the p-value indicates that this factor is more significant than inflation itself, suggesting the UK market is forward-looking, meaning that investors react to the labour market tightening even <i>before</i> the actual inflation figures are reported.</p>
+
+								<h3>2. The Crowding Out effect</h3>
+								<p>While <b>Government Debt</b> was insignificant in the UK model (likely due to Quantitative Easing and high institutional credibility), it became highly significant in the G7 Panel. Across advanced economies, higher debt levels generally push interest rates higher, though the effect is non-linear, meaning investors only spike rates once debt hits a tipping point. Thus, while debt is a fundamental structural driver of global rates, it is not a primary determinant for forecasting UK interest rate movements in 2026.</p>
+
+								<h3>3. Global Financial Cycles</h3>
+								<p>The insignificance of the short-term rate in the G7 panel suggests that <b>global inflation and debt</b> are more consistent predictors of bond yields than individual central bank policies alone.</p>
+
+								<hr />								
+								<h2>Investment Decision: Buy in 2026</h2>
+								<p>Based on the analysis, three factors are converging to drive UK long-term interest rates <b>downward</b>:</p>
+								<ul>
+									<li><b>Falling Inflation:</b> Down to 3% in January 2026.</li>
+									<li><b>Rising Unemployment:</b> Now at 5.2%, the highest in five years.</li>
+									<li><b>Stagnant Growth:</b> GDP grew by only 0.1%.</li>
+								</ul>
+								<div class="box">
+									<h4>Final Strategy</h4>
+									<p>Because bond prices and yields have an inverse relationship, falling rates mean the price of existing bonds will rise. <b>The recommendation is to buy UK long-term bonds now</b> to profit from capital appreciation as the Bank of England enters an interest rate cut cycle.</p>
+								</div>
+
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section class="split contact">
+							<section class="alt">
+								<h3>Location</h3>
+								<p>Dunedin, New Zealand<br />
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(+64) 029-020-68668</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">ngolengoclinh@gmail.com</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="https://www.facebook.com/linh.ngo.512590/" target="_blank" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="https://www.linkedin.com/in/linh-ngo-2ba694322/" target="_blank" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/eunl-ngo" target="_blank" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Luna Ngo</li><li>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

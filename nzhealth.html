@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>NZ Health Inequality Trends</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<div id="wrapper">
+
+				<header id="header">
+						<a href="index.html" class="logo">Luna Ngo</a>
+					</header>
+
+				<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Projects</a></li>
+							<li class="active"><a href="nzhealth.html">NZ Health Disparities Case Study</a></li>
+						</ul>
+					</nav>
+
+				<div id="main">
+
+               <!-- Post -->
+				<section class="post">
+					<header class="major">
+						<h1>A Decade of Health Outcomes in New Zealand: Trends and Inequality</h1>
+                        <p>Health inequalities remain a major public health challenge in New Zealand. Different demographic groups experience very different health outcomes depending on ethnicity, income, and access to healthcare.
+                This project analyses the <a target="_blank" href="https://minhealthnz.shinyapps.io/nz-health-survey-2024-25-annual-data-explorer/_w_712c58c84ace4fa69d10ac52b24af4d2/#!/home">New Zealand Health Survey (2011-2024)</a> to identify the largest health disparities across demographic groups and explore how these inequalities have evolved over time.
+            </p>
+
+            <p><strong>Technical Stack:</strong> SQLite (ETL/Analysis), Power BI (Visualization), DAX</p>
+            </header>
+            <h2>Key Questions</h2>
+
+            <ul>
+            <li>Which health issues are most prevalent in New Zealand?</li>
+            <li>Which demographic groups face the highest health risks?</li>
+            <li>Where are the largest health disparities?</li>
+            <li>Are inequalities widening or improving over time?</li>
+            </ul>
+
+
+                <h2>Data & Methodology</h2>
+
+                <p>
+                The analysis uses data from the New Zealand Health Survey. The raw datasets were cleaned and transformed using SQL to create three analytical tables. Download the cleaned csv files <a target="_blank" href="https://github.com/eunl-ngo/PortfolioProjects/tree/main/NZHealth-SQL-PowerBI">here.</a> 
+                </p>
+                </p>
+
+                <h3>Data Pipeline</h3>
+
+                <ul>
+                <li><b>final_prevalences</b>: prevalence of health indicators by demographic group</li>
+                <li><b>final_rate_ratios</b>: disparity ratios between demographic groups</li>
+                <li><b>final_time_series</b>: time-series dataset for trend analysis (2011–2024)</li>
+                </ul>
+
+                <p>
+                Key transformations performed in SQL included:
+                <ul>
+                <li>Reshaping wide-format time series data into long format</li>
+                <li>Cleaning suppressed survey values</li>
+                <li>Standardising demographic group labels</li>
+                <li>Categorizing health indicators</li>
+                </ul>
+                </p>
+
+                <hr />
+                <h2>Finding 1: Most Prevalent Health Issues</h2>
+                <p>
+                To understand the national health baseline, I first identified the most common health indicators in 2024.
+                </p>
+
+                <div style="text-align:center;">
+                <img src="images/nzhealthoverall.png" 
+                style="width:600px; max-width:100%; height:auto; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+                <p>
+                67.3% of the population is classified as either "Overweight or obese." This is the single most common health indicator in the dataset.
+                The population is split almost evenly between those who are "Obese" (34.2%) and those who are "Overweight but not obese" (33.2%).
+                With over two-thirds of the population falling into these categories, the long-term risk for secondary conditions like Type 2 diabetes and heart disease is extremely high. This suggests that metabolic health is a universal public health challenge.
+                <div>
+                <p>
+                Mental health markers appear as the second-largest health issue in New Zealand.
+                While low distress is often considered a normal part of life, the high percentage (65.4%) suggests a baseline level of mental strain across the majority of the population. The moderate distress level is 20.4%, indicates that mental wellbeing support is a high-demand service area.
+                </p>
+                </div>
+
+                <div>
+                <p>
+                Drinking behaviours also appears among the most common indicators.
+                Unlike smoking, which shows a declining trend, alcohol consumption patterns show a consistent and high-risk behavior that has not yet seen a similar decline.
+                </p>
+                </div>
+
+				<hr />
+
+                <h2>Finding 2: Largest Health Inequalities</h2>
+
+                <p>
+                Next, I analysed health disparities between demographic groups using rate ratios.
+                </p>
+
+                <div style="text-align:center;">
+                <img src="images/disparities.png" 
+                style="width:700px; max-width:100%; height:auto; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+                <p>
+                The analysis revealed extremely large disparities for several indicators. Some of the largest disparities occur between disabled and non-disabled populations.
+                For example, autism spectrum disorder among disabled children aged 5–14 shows a rate ratio exceeding 23× compared with non-disabled children.
+                Disparities also occur between the most deprived and least deprived populations. The most deprived group (boys) experienced physical punishment 21 times more compared with the least deprived group. Similar patterns are observed in unmet healthcare needs and second-hand smoking, highlighting persistent structural health inequalities.
+               </p>
+				<hr />
+
+                
+                <h2>Finding 3: Ethnic Health Inequality</h2>
+                <p>
+                Ethnic disparities were examined by comparing Māori populations with non-Māori populations.
+                We use the final_rate_ratios table to find which indicators have the highest disparity for Māori vs. Non-Māori <i>(i.e., if low_ci is greater than 1.0, the group has a significantly higher risk. If high_ci is less than 1.0, they have a significantly lower risk)</i>.
+               </p>
+
+                <div style="text-align:center;">
+                <img src="images/maori_rate.png" 
+                style="width:700px; max-width:100%; height:auto; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+                <p>
+                The results show significantly higher risk for several health indicators among Māori populations, including smoking and healthcare access barriers.
+                </p>
+
+                <div class="highlight">
+                Key insight: Ethnic health disparities remain a persistent challenge in New Zealand's healthcare system.
+                </div>
+				<hr />
+
+
+                <h2>Interactive Dashboards</h2>
+                <p>
+                Two interactive dashboards were created using PowerBI to visualise trends and disparities.
+                The pbix file can be viewed <a target="_blank" href="https://github.com/eunl-ngo/PortfolioProjects/tree/main/NZHealth-SQL-PowerBI">here.</a> 
+                </p>
+
+                <h3>National Health Trends Dashboard</h3>
+
+                <div style="text-align:center;">
+                <img src="images/nzhealthdb1.png" 
+                style="width:900px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+                <h3>Ethnic Inequality Dashboard</h3>
+                <div style="text-align:center;">
+                <img src="images/nzhealthdb2.png" 
+                style="width:900px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+
+
+
+                <h2>Key Insights</h2>
+                <blockquote>"Are health outcomes improving?"</blockquote>
+                <div style="text-align:center;">
+                <img src="images/nzdistress.png" 
+                style="width:700px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+                <p>To understand long-term health trends, I analysed the average national health indicators over time. Several health indicators improved during the period, including declining smoking rates. However, obesity and psychological distress increased steadily.
+                High psychological distress is one of the fastest growing health concern, affecting approximately 14% of New Zealand population.</p>
+                </ul>
+                
+                <blockquote>"Which health problems affect the population most?"</blockquote>
+                <div style="text-align:center;">
+                <img src="images/mostprevalent.png" 
+                style="width:700px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+                <p>Obesity remains the most prevalent health issue among adults, affecting almost one-third of the population. Psychological distress, drinking and smoking also represent significant public health challenges.</p>
+                 
+                <ul>
+                <blockquote>"Where are ethnic disparities largest for Māori population?"</blockquote>
+                <p>This table identifies the most significant health disparities between the Māori and non-Māori populations in New Zealand, using rate ratios to quantify the gap. A rate ratio of 1.0 would indicate equality, any number higher indicates a higher risk or prevalence for the Māori population.</p>
+                <div style="text-align:center;">
+                <img src="images/maori_inequality.png" 
+                style="width:600px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+                <p>
+                The most severe disparities are concentrated in indicators of financial stress and food security.
+                Māori are 3.84 times more likely to use food grants "often" compared to non-Māori. While the national average for using food grants "often or sometimes" is 13.40%, the disparity ratio remains high at 3.22.
+                Indicator "We eat less - often" has a rate ratio of 2.81, showing that the economic struggle translates directly into reduced food consumption.
+                <div>
+                Opioid Usage: There is a 3.77x higher risk for opioid use within the past 12 months for Māori. This is particularly high as the national prevalence is quite low at 0.80%.
+                </p>
+                
+                <p>                
+                <div>
+                Smoking and Vaping: The disparity is even wider, Māori are 3.45 times more likely to be a "Daily smoker and daily vaper" compared to 2.89 times for just "Daily smokers".
+                Weekly cannabis use is 2.86 times more prevalent among Māori, with a national average of 4.60%.
+                </div>
+                </p>
+
+                <blockquote>"Are health disparities getting worse over time?"</blockquote>
+                <div style="text-align:center;">
+                <img src="images/smoketrend.png" 
+                style="width:700px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+                <p>Smoking prevalence has declined across all populations over the past decade. However, Māori smoking rates remain approximately three times as high as those of European and Asian populations, indicating persistent health inequality despite overall improvements.</p>
+                
+                <blockquote>"Does income deprivation affect health outcomes?"</blockquote>
+                <div style="text-align:center;">
+                <img src="images/nzhealthdepr.png" 
+                style="width:700px; max-width:100%; height:auto; border-radius:7px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                </div>
+                <p>A clear socioeconomic gradient exists in health outcomes. Individuals living in the most deprived areas (Quintile 5) report significantly lower levels of good health compared with those in the least deprived areas (Quintile 1).</p>
+                <hr />
+
+                <h2>Conclusion</h2>
+
+                <p>
+                This analysis highlights the persistent health inequalities across New Zealand.
+                Lifestyle-related conditions are among the most prevalent health challenges in New Zealand.
+                While some public health interventions appear to be improving outcomes such as smoking rates, other issues such as mental health continue to worsen.
+                </p>
+
+                <p>
+                Understanding where disparities are largest allows policymakers and healthcare providers to better target interventions and improve equity across the population.
+                </p>
+				</section>
+
+			</div>
+
+
+            <!-- Footer -->
+					<footer id="footer">
+						<section class="split contact">
+							<section class="alt">
+								<h3>Location</h3>
+								<p>Dunedin, New Zealand<br />
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(+64) 029-020-68668</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">ngolengoclinh@gmail.com</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="https://www.facebook.com/linh.ngo.512590/" target="_blank" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="https://www.linkedin.com/in/linh-ngo-2ba694322/" target="_blank" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/eunl-ngo" target="_blank" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Luna Ngo</li><li>
+					</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
