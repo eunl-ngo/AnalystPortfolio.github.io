@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Urban Mobility: Bike Sharing Case Study - Luna Ngo</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<div id="wrapper">
+
+				<header id="header">
+						<a href="AnalystPortfolio.html" class="logo">Luna Ngo</a>
+					</header>
+
+				<nav id="nav">
+						<ul class="links">
+							<li><a href="AnalystPortfolio.html">Projects</a></li>
+							<li class="active"><a href="bikecount.html">Bike Sharing Case Study</a></li>
+						</ul>
+					</nav>
+
+				<div id="main">
+
+						<section class="post">
+								<header class="major">
+									<h1>Cycles of the City:<br />
+									Decoding Bike Sharing Demand</h1>
+									<p>A deep dive into time series forecasting and linear modelling to predict urban cycling patterns based on weather, holidays, and seasonal trends.</p>
+								</header>
+
+								<div class="box">
+									<div class="">
+										<div class="col-4 col-12-small">
+											<h4>Challenge</h4>
+											<p>Cleaning volatile daily counts and accounting for extreme weather outliers like Hurricane Sandy.</p>
+										</div>
+										<div class="col-4 col-12-small">
+											<h4>Methodology</h4>
+											<p>STL Decomposition, Moving Averages, and Multivariate Linear Regression with Factor Analysis.
+                                            Analysis based on the <a href="https://www.researchgate.net/publication/259009057_Event_labeling_combining_ensemble_detectors_and_background_knowledge">Fanaee-T and Gama (2014)</a> framework and the Bike Sharing Dataset from the UCI Machine Learning Repository.</p>
+										</div>
+										<div class="col-4 col-12-small">
+											<h4>Result</h4>
+											<p>An Adjusted R² of 0.833, effectively identifying temperature and "the weekend effect" as primary drivers.</p>
+										</div>
+									</div>
+								</div>
+
+								<hr />
+
+								<h2>Section 1: Cleaning the Noise – Why Alter the Data?</h2>
+								<p>Before we could model demand, we had to address the spikes and dips. The raw data contained outliers, these are days where bike counts dropped below 100 or surged over 4,000. <i>Were these system errors, or real-world events?</i></p>
+								<div style="text-align:center;">
+                                    <img src="images/tsclean.jpg" 
+                                        style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                </div>
+								<p>Using <code>tsclean()</code>, we identified anomalies that aligned with major events. The corrected outliers aligned with real-world events compared with Table 4 from <a href="https://www.researchgate.net/publication/259009057_Event_labeling_combining_ensemble_detectors_and_background_knowledge">Fanaee-T and Gama (2014)</a> such as Hurricane Sandy (29–30/10/2012), which had the highest impact rating (5), Bike DC (13/05/2012) and Unseasonably cool weather (07/10/2012). These events likely caused significant disruptions or surges in bike usage, explaining the anomalies in the time series. This suggests the tsclean() function effectively detected and corrected true anomalies driven by real-world conditions. However, not all corrected outliers corresponded to events listed in Table 4 (22/04/2012), it may reflect an unrecorded event, data entry errors, or simply noise in the data.</p>
+
+								<hr />
+
+								<h2>Section 2: The Visual Narrative – Seasonal Rhythms</h2>
+								<p>Daily data is messy. To see the truth, we applied <b>7-day and 30-day moving averages</b>. This revealed a clear, intuitive cycle: usage builds through the spring, peaks in the heat of July, and retreats as the British winter sets in.</p>
+								<div style="text-align:center;">
+                                    <img src="images/movingavg.png" 
+                                        style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                </div>
+
+								<h3>Is the weather really the main driver of bike-sharing demand?</h3>
+								<p>Our exploratory analysis suggests a resounding yes:</p>
+								<ul>
+									<li><b>The Holiday Dip:</b> Non-holidays show higher median usage. While holidays have high-usage spikes, they are less predictable. Regular days are anchored by the <b>commuter cycle</b>.</li>
+								    <div style="text-align:center;">
+                                        <img src="images/holidaybike.png" 
+                                            style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                    </div>
+                                    <li><b>Higher use in middle of the week:</b> There isn't a dramatic difference in usage between weekdays, but midweek (especially Wed/Thurs) may see slightly higher use. This could be related to regular commuting patterns. There is no extreme outliers visible, but the vertical range suggests a mix of high and low usage days across all weekdays</b>.</li>
+								    <div style="text-align:center;">
+                                        <img src="images/midweekbike.png" 
+                                            style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                    </div>
+                                    <li><b>Weather Sensitivity:</b> Clear skies dominate the charts. Rainy days show a dramatic collapse in both median usage and variability. People simply don't rent bikes in the rain.</li>
+									<div style="text-align:center;">
+                                        <img src="images/weatherbike.png" 
+                                            alt="Holiday Bike Usage"
+                                            style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                    </div>
+                                    <li><b>The Temperature "Sweet Spot":</b> Usage rises linearly with temperature until about 0.6 (normalised). <i>"What happens when it gets too hot?"</i> Beyond that peak, counts begin to decline as discomfort and safety concerns over extreme heat take over.</li>
+									<div style="text-align:center;">
+                                         <img src="images/tempbike.jpg" 
+                                             style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                    </div>
+                                    <li><b>Wind and Humidity:</b> Both exhibit non-linear "Goldilocks" zones. Moderate humidity (0.6-0.7) and low wind speeds (0.1-0.2) are the preferred conditions for local cyclists.</li>
+                                    <div style="text-align:center;">
+                                        <img src="images/windbike.png" 
+                                             style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                    </div>
+                                    <div style="text-align:center;">
+                                         <img src="images/humidbike.png" 
+                                             style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                    </div>
+                                </ul>
+
+								<h3>Stationarity & Decomposition</h3>
+								<p>The <b>STL Decomposition</b> confirmed our suspicions: the series is non-stationary. We see a strong upward trend (growing popularity of the scheme) and a repeating seasonal component. This means we cannot use simple models; we must account for these cycles or apply differencing.</p>
+                                <div style="text-align:center;">
+                                    <img src="images/stlbike.png" 
+                                        style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                </div>
+								<hr />
+
+								<h2>Section 3: Linear Model – Factors vs. Quantities</h2>
+								<p>Initially, I ran a standard regression, but <i>"is a Friday really 'greater' than a Tuesday?"</i> In our first pass, the model treated days of the week as continuous numbers (0 to 6). This is a mistake.</p>
+								
+								<p>By converting <b>Weekday, Season, and Weather Situation</b> into <b>factors</b>, we allowed the model to estimate separate effects for each category. This boosted our <b>Mean R² from 0.971 to 0.974</b>. While a small numerical jump, it represents a much more theoretically sound model that captures non-linear jumps between a "Cloudy" day and a "Rainy" one.</p>
+
+								<div class="box">
+									<h4>The Overfitting Trap</h4>
+									<p>I experimented with converting <i>Hours</i> and <i>Months</i> to factors as well. While the R² stayed high, the model became overly complex. <b>Lesson learned:</b> Converting only the primary categorical variables provides the best balance of accuracy without introducing noise.</p>
+								</div>
+
+								<hr />
+
+								<h2>Section 4: Interpreting the Results</h2>
+								<p>Our final model (Adjusted R² = 0.833) provides a clear roadmap of urban demand:</p>
+								
+								<div class="table-wrapper">
+									<table>
+										<thead>
+											<tr>
+												<th>Variable</th>
+												<th>Effect on Count</th>
+												<th>Practical Meaning</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><b>Year (yr)</b></td>
+												<td>+2084</td>
+												<td>Strong year-on-year growth in scheme adoption.</td>
+											</tr>
+											<tr>
+												<td><b>Holiday</b></td>
+												<td>-712</td>
+												<td>Significant drop as commuters stay home.</td>
+											</tr>
+											<tr>
+												<td><b>Temp</b></td>
+												<td>+4994</td>
+												<td>The strongest positive driver of demand.</td>
+											</tr>
+											<tr>
+												<td><b>Rain (weathersit3)</b></td>
+												<td>-1601</td>
+												<td>Heavy rainfall nearly halts casual rentals.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<p>Interestingly, while the raw data suggested Summer was the peak, the model (after adjusting for heat and humidity) actually showed <b>Autumn (Season 4)</b> having the highest coefficient (+1613). This suggests that when weather is "equalised," the weather in Autumn might actually encourage more consistent riding than the sweltering peak of Summer.</p>
+
+								<hr />
+
+								<h2>Section 5: Forecasting the Future (Lags and Leads)</h2>
+								<p><i>How far into the future can we actually see?</i> We tested the model's predictive power by introducing <b>Lag</b> (past data) and <b>Lead</b> (future prediction) variables.</p>
+								<div style="text-align:center;">
+                                    <img src="images/lagbike.jpg" 
+                                        style="width:500px; max-width:100%; height:auto; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                                </div>
+
+								<p>The results were conclusive:
+								<ul>
+									<li><b>Short-term precision:</b> Predictive power (R²) is highest at Lead = 1 and decays as we try to look further ahead.
+                                    This is because past values of bike count are more useful for predicting the near future, and correlation weakens as we try to predict further into the future.</li>
+									<li><b>The Power of 7:</b> Including up to 7 lags significantly improves the model because it captures the <b>weekly seasonality</b>, meaning the model "remembers" what happened last Tuesday to predict next Tuesday.</li>
+									<li><b>Diminishing Returns:</b> Beyond 7 lags, predictive power declines. The natural variability of weather and urban events eventually overrides the history of the data.</li>
+								</ul>
+
+								<hr />
+
+								<h2>Conclusion: A Greener City</h2>
+								<p>This analysis proves that while weather is the major determinant of bike-sharing demand, the underlying commuter patterns and year-on-year growth are the foundation. For city planners, this means expanding capacity not just for sunny Saturdays, but for the growing base of weekday commuters who are increasingly choosing bikes over cars.</p>
+							</section>
+
+					</div>
+
+ 					<!-- Footer -->
+					<footer id="footer">
+						<section class="split contact">
+							<section class="alt">
+								<h3>Location</h3>
+								<p>Dunedin, New Zealand<br />
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(+64) 029-020-68668</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">ngolengoclinh@gmail.com</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="https://www.facebook.com/linh.ngo.512590/" target="_blank" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="https://www.linkedin.com/in/linh-ngo-2ba694322/" target="_blank" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/eunl-ngo" target="_blank" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Luna Ngo</li><li>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
